@@ -7,6 +7,7 @@ function validateCreateRequest(req, res, next) {
     ErrorResponse.explanation = "Model number not found in the request body";
     return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
   }
+  next();
 }
 
 module.exports = { validateCreateRequest };
