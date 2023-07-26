@@ -17,9 +17,10 @@ async function createAirplane(req, res) {
 
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
+    console.log("error inside the controller", error);
     ErrorResponse.error = error;
     Logger.error(error);
-    return res.status(error.status).json(ErrorResponse);
+    return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
@@ -31,7 +32,7 @@ async function getAllAirplanes(req, res) {
   } catch (error) {
     ErrorResponse.error = error;
     Logger.error(error);
-    return res.status(error.status).json(ErrorResponse);
+    return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
@@ -43,7 +44,19 @@ async function getAirplane(req, res) {
   } catch (error) {
     ErrorResponse.error = error;
     Logger.error(error);
-    return res.status(error.status).json(ErrorResponse);
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+async function destroyAirplane(req, res) {
+  try {
+    const response = await AirplaneService.destroyAirplane(req.params.id);
+    SuccessResponse.data = response;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    Logger.error(error);
+    return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
@@ -51,4 +64,5 @@ module.exports = {
   createAirplane,
   getAllAirplanes,
   getAirplane,
+  destroyAirplane
 };
