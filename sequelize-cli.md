@@ -37,3 +37,7 @@
     sequelize db:seed:undo
 ```
 
+## Model Schema Constraints
+```
+    select * from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_NAME = 'Flights' AND CONSTRAINT_SCHEMA = 'Flights';
+```

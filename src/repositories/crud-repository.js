@@ -23,7 +23,6 @@ class CrudRepository {
         StatusCodes.NOT_FOUND
       );
     }
-
     return response;
   }
 

@@ -3,6 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const { CityService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 
+
 async function createCity(req, res) {
   try {
     const city = await CityService.createCity({

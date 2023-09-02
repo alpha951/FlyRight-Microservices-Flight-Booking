@@ -12,7 +12,7 @@ module.exports = {
     queryInterface.addConstraint("Airports", {
       type: "FOREIGN KEY",
       fields: ["cityId"],
-      nams: "city-fkey-constraint",
+      name: "city-fkey-constraint",
       references: {
         //Required field
         table: "Cities",
