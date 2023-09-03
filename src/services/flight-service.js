@@ -4,6 +4,7 @@ const { FlightRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 const logger = require("../config/logger-config");
 const { Op } = require("sequelize");
+const { log } = require("winston");
 
 // new instance of the FlightRepository class
 const flightRepository = new FlightRepository();
@@ -73,6 +74,7 @@ async function getAllFlights(query) {
     );
     return flights;
   } catch (error) {
+    console.log(error);
     throw new AppError(
       "Something went wrong while getting the flights!",
       StatusCodes.INTERNAL_SERVER_ERROR
