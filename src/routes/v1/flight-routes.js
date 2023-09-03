@@ -12,8 +12,8 @@ router.post(
   FlightController.createFlight
 );
 
-// // /api/v1/Flights GET
-// router.get("/", FlightController.getAllFlights);
+// /api/v1/Flights GET
+router.get("/", FlightController.getAllFlights);
 
 // // /api/v1/Flights/:id GET
 // router.get("/:id", FlightController.getFlight);

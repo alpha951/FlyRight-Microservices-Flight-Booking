@@ -33,6 +33,24 @@ async function createFlight(req, res) {
   }
 }
 
+/**
+ * GET : /Flights
+ * req.query : {departureAirportId, arrivalAirportId}
+ */
+
+async function getAllFlights(req, res) {
+  try {
+    const flights = await FlightService.getAllFlights(req.query);
+    SuccessResponse.data = flights;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    Logger.error(error);
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   createFlight,
+  getAllFlights,
 };
