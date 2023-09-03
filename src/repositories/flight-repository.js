@@ -35,7 +35,6 @@ class FlightRepository extends CrudRepository {
           include: {
             model: City,
             required: true,
-            attributes: ["id", "name", "unique", "createdAt", "updatedAt"], // Include only the desired attributes
           },
         },
         {
@@ -52,7 +51,6 @@ class FlightRepository extends CrudRepository {
           include: {
             model: City,
             required: true,
-            attributes: ["id", "name", "unique", "createdAt", "updatedAt"], // Include only the desired attributes
           },
         },
       ],
