@@ -1,6 +1,6 @@
 const CrudRepository = require("./crud-repository");
 const { Logger } = require("../config");
-const { Flight, Airplane, Airport } = require("../models");
+const { Flight, Airplane, Airport, City } = require("../models");
 const { Sequelize } = require("sequelize");
 
 class FlightRepository extends CrudRepository {
@@ -21,12 +21,21 @@ class FlightRepository extends CrudRepository {
           model: Airport,
           required: true,
           as: "departureAirport",
+
+          /*
+           !imp we need to explicity define the on clause to join the tables since `departureAirport.code` (which is the foreign key) is not the primary key of the Airport table while in case of Airplane table `airplaneId` is the primary key
+          */
           on: {
             col1: Sequelize.where(
               Sequelize.col("Flight.departureAirportId"),
               "=",
               Sequelize.col("departureAirport.code")
             ),
+          },
+          include: {
+            model: City,
+            required: true,
+            attributes: ["id", "name", "unique", "createdAt", "updatedAt"], // Include only the desired attributes
           },
         },
         {
@@ -39,6 +48,11 @@ class FlightRepository extends CrudRepository {
               "=",
               Sequelize.col("arrivalAirport.code")
             ),
+          },
+          include: {
+            model: City,
+            required: true,
+            attributes: ["id", "name", "unique", "createdAt", "updatedAt"], // Include only the desired attributes
           },
         },
       ],
