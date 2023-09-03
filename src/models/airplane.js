@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       modelNumber: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false, // no unique constraint since multiple airplanes can have the same model number
       },
       capacity: {
         type: DataTypes.INTEGER,
