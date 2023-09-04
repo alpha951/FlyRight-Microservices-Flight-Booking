@@ -1,14 +1,14 @@
-const { StatusCodes } = require('http-status-codes');
+const { StatusCodes } = require("http-status-codes");
 
 const info = (req, res) => {
-    return res.status(StatusCodes.OK).json({
-        success: true,
-        message: 'API is live',
-        error: {},
-        data: {},
-    });
-}
+  return res.status(StatusCodes.OK).json({
+    success: true,
+    message: "Flight Booking API is live",
+    error: {},
+    data: {},
+  });
+};
 
 module.exports = {
-    info
-}
+  info,
+};
