@@ -82,7 +82,30 @@ async function getAllFlights(query) {
   }
 }
 
+async function getFlightById(data) {
+  try {
+    const flight = await flightRepository.get(data);
+    return flight;
+  } catch (error) {
+    console.log("error in service is", error);
+    Logger.error(error);
+
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      console.log("Failing in service layer due to status code not found");
+      throw new AppError(
+        "The Flight you requested is not present in the database",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Something went wrong while getting Flight by id",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createFlight,
   getAllFlights,
+  getFlightById,
 };

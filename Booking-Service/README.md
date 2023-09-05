@@ -100,3 +100,24 @@ Flushing can happen because a memory area became full and system needs to free s
 ## Double write buffer
 It is a storage area where InnoDB writes pages flushed from buffer pool before writing the pages to their position in data files. If a system crashes in middle of a page write, InnoDB can find a good copy from double write buffer.
 
+
+#  Race Condition
+## Locking Mechanism
+
+1. Shared Locks :
+It allow multiple txn to read data at the same time but restrict any of them from writing.
+
+2. Exclusive Locks :
+This prevents txn from reading or writing data at the same point of time.
+
+3. Intention Locks :
+This is use to specify a txn is planning to read or write a certain section of data.
+
+4. Row level Locks :
+This allows txn to lock only a specific row.
+
+
+MySQL : MVCC (Multi Version Concurrency Control) type database
+It allow multiple txn to read or write same data without much conflict.
+
+Every txn in MySQL sort of capture the data it is about to modify at start of txn and write the change to an entirely different version of data. This is called MVCC.
