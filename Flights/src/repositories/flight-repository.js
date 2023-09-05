@@ -3,6 +3,9 @@ const { Logger } = require("../config");
 const { Flight, Airplane, Airport, City } = require("../models");
 const { Sequelize } = require("sequelize");
 
+const db = require("../models");
+const { addRowLock } = require("./queries");
+
 class FlightRepository extends CrudRepository {
   constructor() {
     super(Flight); // calling the constructor of the parent class to inherit all methods from it
@@ -59,12 +62,13 @@ class FlightRepository extends CrudRepository {
   }
 
   async updateRemainingSeats(flightId, seats, dec = 1) {
+    await db.sequelize.query(addRowLock(flightId));
+
     /**
      * Sequelize provides a way to increment/decrement a column value by a given number
      * const incrementResult = await jane.increment('age', { by: 2 });
      *  https://sequelize.org/docs/v6/core-concepts/model-instances/#incrementing-and-decrementing-integer-values
      */
-    console.log("FLIGHID is ", flightId);
     const flight = await Flight.findByPk(flightId);
     if (dec) {
       await flight.decrement("totalSeats", {
