@@ -85,4 +85,15 @@ function validateCreateRequest(req, res, next) {
   }
 }
 
-module.exports = { validateCreateRequest };
+function validateUpdateSeats(req, res, next) {
+  if (!req.body.seats) {
+    ErrorResponse.message = "Something went wrong while updating flight";
+
+    ErrorResponse.explanation = "seats data not found in the request body";
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+
+  next();
+}
+
+module.exports = { validateCreateRequest, validateUpdateSeats };

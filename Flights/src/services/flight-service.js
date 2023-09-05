@@ -91,7 +91,6 @@ async function getFlightById(data) {
     Logger.error(error);
 
     if (error.statusCode == StatusCodes.NOT_FOUND) {
-      console.log("Failing in service layer due to status code not found");
       throw new AppError(
         "The Flight you requested is not present in the database",
         error.statusCode
@@ -104,8 +103,32 @@ async function getFlightById(data) {
   }
 }
 
+async function updateSeats(data) {
+  try {
+    const response = await flightRepository.updateRemainingSeats(
+      data.flightId,
+      data.seats,
+      data.dec
+    );
+    return response;
+  } catch (error) {
+    console.log("error in update seat service ", error);
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "Can't update the data of the flight, requested by you",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Something went wrong updating seats id",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createFlight,
   getAllFlights,
   getFlightById,
+  updateSeats,
 };

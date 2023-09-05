@@ -57,6 +57,26 @@ class FlightRepository extends CrudRepository {
     });
     return flights;
   }
+
+  async updateRemainingSeats(flightId, seats, dec = 1) {
+    /**
+     * Sequelize provides a way to increment/decrement a column value by a given number
+     * const incrementResult = await jane.increment('age', { by: 2 });
+     *  https://sequelize.org/docs/v6/core-concepts/model-instances/#incrementing-and-decrementing-integer-values
+     */
+    console.log("FLIGHID is ", flightId);
+    const flight = await Flight.findByPk(flightId);
+    if (dec) {
+      await flight.decrement("totalSeats", {
+        by: 2,
+      });
+    } else {
+      await flight.increment("totalSeats", {
+        by: seats,
+      });
+    }
+    return flight;
+  }
 }
 
 module.exports = FlightRepository;
