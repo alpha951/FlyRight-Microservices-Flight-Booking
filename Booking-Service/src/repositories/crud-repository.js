@@ -1,4 +1,5 @@
-const { Logger } = require("../config");
+const { StatusCodes } = require("http-status-codes");
+const AppError = require("../utils/errors/app-error");
 
 class CrudRepository {
   constructor(model) {
@@ -6,62 +7,65 @@ class CrudRepository {
   }
 
   async create(data) {
-    try {
-      const result = await this.model.create(data);
-      return result;
-    } catch (error) {
-      Logger.error(error);
-      throw error;
-    }
+    const result = await this.model.create(data);
+    return result;
   }
 
   async destroy(data) {
-    try {
-      const response = await this.model.destroy({
-        where: {
-          id: data,
-        },
-      });
-      return response;
-    } catch (error) {
-      Logger.error(
-        "Something went wrong in the CRUD Repo : destroy() function"
+    const response = await this.model.destroy({
+      where: {
+        id: data,
+      },
+    });
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource ",
+        StatusCodes.NOT_FOUND
       );
-      throw error;
     }
+    return response;
   }
 
   async get(data) {
-    try {
-      const response = await this.model.findByPk(data);
-      return response;
-    } catch (error) {
-      Logger.error("Something went wrong in the CRUD Repo : get() function");
-      throw error;
+    const response = await this.model.findByPk(data);
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource ",
+        StatusCodes.NOT_FOUND
+      );
     }
+    return response;
   }
   async getAll() {
-    try {
-      const response = await this.model.findAll();
-      return response;
-    } catch (error) {
-      Logger.error("Something went wrong in the CRUD Repo : getAll() function");
-      throw error;
-    }
+    const response = await this.model.findAll();
+    return response;
   }
 
   async update(id, data) {
-    try {
+    const tableAttributes = Object.keys(this.model.rawAttributes);
+    const reqAttributes = Object.keys(data);
+    const hasAllAttributes = reqAttributes.every((elem) =>
+      tableAttributes.includes(elem)
+    );
+    if (hasAllAttributes) {
       const response = await this.model.update(data, {
         where: {
           id: id,
         },
       });
 
+      if (response[0] == 0) {
+        throw new AppError(
+          "The data for the given ID could not be found",
+          StatusCodes.NOT_FOUND
+        );
+      }
       return response;
-    } catch (error) {
-      Logger.error("Something went wrong in the CRUD Repo : update() function");
-      throw error;
+    } else {
+      throw new AppError(
+        "The column for the given ID could not be found",
+        StatusCodes.NOT_FOUND
+      );
     }
   }
 }
