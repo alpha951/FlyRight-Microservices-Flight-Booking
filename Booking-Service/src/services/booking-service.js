@@ -41,7 +41,7 @@ async function createBooking(data) {
     return booking;
   } catch (error) {
     console.log("We are here inside catch block");
-    console.log("first error", error);
+    console.log("first error", error.StatusCodes);
     await transaction.rollback();
     throw error;
   }

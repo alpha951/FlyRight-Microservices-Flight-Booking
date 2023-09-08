@@ -14,10 +14,13 @@ async function createBooking(req, res) {
     console.log("first response", SuccessResponse);
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
-    console.log("insisde controller error", error);
+    console.log("insisde controller error");
     ErrorResponse.error = error;
-    console.log("Found error obj inside booking controller -----", error);
-    return res.status(error.statusCode).json(ErrorResponse);
+    console.log(
+      "Found error obj inside booking controller -----",
+      error.statusCode
+    );
+    return res.status(StatusCodes.SERVICE_UNAVAILABLE).json(ErrorResponse);
   }
 }
 
