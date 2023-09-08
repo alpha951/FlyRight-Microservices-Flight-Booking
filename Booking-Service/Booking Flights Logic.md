@@ -28,6 +28,8 @@
 
 **To solve this issue there is a concept known as IDEMPOTENCY.**
 
+# IDEMPOTENCY
+
 **IDEMPOTENCY** -> It is a property of certain operations in maths and computer science where they can be applied multiple times without changing the result beyond the first application.
 eg.
 U made a payment request and the payment has been made, but by mistake, u initiated another(second) payment request. Now the first request has already made the payment so only the first request will be applied and the second request will not be applied and will not show any effect. In case the first request was not successful and failed, then we will definitely try to apply for the second request.
