@@ -14,7 +14,6 @@ async function createBooking(req, res) {
     console.log("first response", SuccessResponse);
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
-    console.log("insisde controller error");
     ErrorResponse.error = error;
     console.log(
       "Found error obj inside booking controller -----",
@@ -24,4 +23,23 @@ async function createBooking(req, res) {
   }
 }
 
-module.exports = { createBooking };
+async function makePayment(req, res) {
+  try {
+    const booking = await BookingService.makePayment({
+      bookingId: req.body.bookingId,
+      userId: req.body.userId,
+      totalCost: req.body.totalCost,
+    });
+    SuccessResponse.data = booking;
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    console.log(
+      "Found error obj inside booking/makePayment controller -----",
+      error
+    );
+    return res.status(StatusCodes.SERVICE_UNAVAILABLE).json(ErrorResponse);
+  }
+}
+
+module.exports = { createBooking, makePayment };
