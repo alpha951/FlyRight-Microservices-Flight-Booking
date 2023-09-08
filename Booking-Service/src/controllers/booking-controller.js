@@ -11,10 +11,12 @@ async function createBooking(req, res) {
       noOfSeats: req.body.noOfSeats,
     });
     SuccessResponse.data = booking;
+    console.log("first response", SuccessResponse);
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     console.log("insisde controller error", error);
     ErrorResponse.error = error;
+    console.log("Found error obj inside booking controller -----", error);
     return res.status(error.statusCode).json(ErrorResponse);
   }
 }

@@ -18,12 +18,6 @@ async function createBooking(data) {
       `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
     );
 
-    if (flight.status != 200) {
-      // Handle the unexpected response status code from the flight service
-      console.log("Error statuscode flight service...");
-      throw new Error(`Flight service returned status ${response.status}`);
-    }
-
     const flightData = flight.data.data;
     if (data.noOfSeats > flightData.totalSeats) {
       throw new AppError("Not enough seats available", StatusCodes.BAD_REQUEST);
@@ -43,16 +37,11 @@ async function createBooking(data) {
       }
     );
 
-    if (response.status !== 200) {
-      console.log("Error statuscode response ...");
-
-      // Handle the unexpected response status code from the flight service
-      throw new Error(`Flight service returned status ${response.status}`);
-    }
-
     await transaction.commit();
     return booking;
   } catch (error) {
+    console.log("We are here inside catch block");
+    console.log("first error", error);
     await transaction.rollback();
     throw error;
   }
