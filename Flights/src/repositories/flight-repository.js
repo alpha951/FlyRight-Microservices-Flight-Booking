@@ -76,22 +76,14 @@ class FlightRepository extends CrudRepository {
       if (dec == 1 || dec == "1" || dec == true || dec == "true") {
         await flight.decrement(
           "totalSeats",
-          {
-            by: seats,
-          },
-          {
-            transaction: transaction,
-          }
+          { by: seats },
+          { transaction: transaction }
         );
       } else {
         await flight.increment(
           "totalSeats",
-          {
-            by: seats,
-          },
-          {
-            transaction: transaction,
-          }
+          { by: seats },
+          { transaction: transaction }
         );
       }
       await transaction.commit();
