@@ -63,39 +63,43 @@ class FlightRepository extends CrudRepository {
 
   async updateRemainingSeats(flightId, seats, dec = 1) {
     const transaction = await db.sequelize.transaction();
-
-    await db.sequelize.query(addRowLock(flightId));
-
-    /**
-     * Sequelize provides a way to increment/decrement a column value by a given number
-     * const incrementResult = await jane.increment('age', { by: 2 });
-     *  https://sequelize.org/docs/v6/core-concepts/model-instances/#incrementing-and-decrementing-integer-values
-     */
-    const flight = await Flight.findByPk(flightId);
-    if (dec) {
-      await flight.decrement(
-        "totalSeats",
-        {
-          by: 2,
-        },
-        {
-          transaction: transaction,
-        }
-      );
-    } else {
-      await flight.increment(
-        "totalSeats",
-        {
-          by: seats,
-        },
-
-        {
-          transaction: transaction,
-        }
-      );
+    try {
+      await db.sequelize.query(addRowLock(flightId));
+      /**
+       * Sequelize provides a way to increment/decrement a column value by a given number
+       * const incrementResult = await jane.increment('age', { by: 2 });
+       *  https://sequelize.org/docs/v6/core-concepts/model-instances/#incrementing-and-decrementing-integer-values
+       */
+      const flight = await Flight.findByPk(flightId);
+      console.log("dec", dec);
+      console.log(typeof dec);
+      if (dec == 1 || dec == "1" || dec == true || dec == "true") {
+        await flight.decrement(
+          "totalSeats",
+          {
+            by: seats,
+          },
+          {
+            transaction: transaction,
+          }
+        );
+      } else {
+        await flight.increment(
+          "totalSeats",
+          {
+            by: seats,
+          },
+          {
+            transaction: transaction,
+          }
+        );
+      }
+      await transaction.commit();
+      return flight;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-    await transaction.commit();
-    return flight;
   }
 }
 

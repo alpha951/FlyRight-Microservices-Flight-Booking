@@ -70,10 +70,12 @@ async function getFlightById(req, res) {
 
 async function updateSeats(req, res) {
   try {
+    console.log("dec in controllerc", req.body.dec);
+    console.log(typeof req.body.dec);
     const flights = await FlightService.updateSeats({
       flightId: req.params.flightId,
       seats: req.body.seats,
-      dec: Number(req.body.dec),
+      dec: req.body.dec,
     });
 
     SuccessResponse.data = flights;
