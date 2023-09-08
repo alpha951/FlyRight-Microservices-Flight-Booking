@@ -4,6 +4,7 @@ const { ServerConfig } = require("./config");
 const apiRoutes = require("./routes");
 
 const app = express();
+const CRONS = require("./utils/common/cron-jobs");
 
 app.use(express.json()); // for parsing application/json from request body
 
@@ -13,5 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 
 app.listen(ServerConfig.PORT, () => {
+  CRONS();
   console.log(`Successfully started the server on PORT : ${ServerConfig.PORT}`);
 });
