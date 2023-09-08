@@ -5,4 +5,5 @@ dotenv.config();
 module.exports = {
   PORT: process.env.PORT,
   FLIGHT_SERVICE: process.env.FLIGHT_SERVICE,
+  SALT_ROUNDS: process.env.SALT_ROUNDS,
 };
