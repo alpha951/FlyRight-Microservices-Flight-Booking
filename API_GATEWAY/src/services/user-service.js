@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const { UserRepository } = require("../repositories");
+const { UserRepository, RoleRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 const bcrypt = require("bcrypt");
 
@@ -9,12 +9,17 @@ const {
   createToken,
   verifyToken,
 } = require("../utils/common/auth");
+const { ROLE } = require("../utils/common/enums");
+const { ADMIN, CUSTOMER, FLIGHT_COMPANY } = ROLE;
 
 const userRepo = new UserRepository();
-
+const roleRepo = new RoleRepository();
 async function create(data) {
   try {
     const user = await userRepo.create(data);
+    const role = await roleRepo.getRoleByName(CUSTOMER);
+    // addRole method comes from many-many association : Refer https://medium.com/@julianne.marik/sequelize-associations-magic-methods-c72008db91c9
+    user.addRole(role);
     return user;
   } catch (error) {
     if (error.name == "SequelizeValidationError") {
