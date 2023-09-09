@@ -5,6 +5,8 @@ const { ServerConfig } = require("../config");
 const { AppError } = require("../utils");
 const { FLIGHT_SERVICE } = ServerConfig;
 
+const { Queue } = require("../config");
+
 const db = require("../models");
 
 const { Enums } = require("../utils/common");
@@ -91,6 +93,12 @@ async function makePayment(data) {
     );
     console.log("response inside booking/payment service", response);
     await transaction.commit();
+    Queue.sendData({
+      recipientEmail: "20uec068@lnmiit.ac.in",
+      text: `Booking has been created for ${bookingDetails.flightId} with ${bookingDetails.noOfSeats}`,
+      subject: "Flight Booked",
+    });
+
     return response;
   } catch (error) {
     await transaction.rollback();

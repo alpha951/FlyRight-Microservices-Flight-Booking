@@ -1,1 +1,3 @@
-module.exports = {};
+module.exports = {
+  emailService: require("./email-service"),
+};

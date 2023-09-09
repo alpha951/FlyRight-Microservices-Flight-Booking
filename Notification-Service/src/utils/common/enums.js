@@ -12,4 +12,10 @@ const BOOKING_STATUS = {
   INITIATED: "initiated",
 };
 
-module.exports = { SEAT_TYPE, BOOKING_STATUS };
+const TICKET_STATUS = {
+  PENDING: "pending",
+  SUCCESS: "success",
+  FAILED: "failed",
+};
+
+module.exports = { SEAT_TYPE, BOOKING_STATUS, TICKET_STATUS };
