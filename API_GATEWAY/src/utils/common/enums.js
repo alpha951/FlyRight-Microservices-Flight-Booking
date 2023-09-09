@@ -12,4 +12,10 @@ const BOOKING_STATUS = {
   INITIATED: "initiated",
 };
 
-module.exports = { SEAT_TYPE, BOOKING_STATUS };
+const ROLE = {
+  ADMIN: "admin",
+  CUSTOMER: "customer",
+  FLIGHT_COMPANY: "flight_company",
+};
+
+module.exports = { SEAT_TYPE, BOOKING_STATUS, ROLE };

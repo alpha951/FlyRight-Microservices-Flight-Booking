@@ -1,5 +1,5 @@
 
-# Authentication and Authorization
+> Authentication and Authorization
 
 ## Authentication
 To identify a user, you need to authenticate the user. Authentication is the process of verifying the identity of a user.  WHO ARE YOU ?
@@ -29,3 +29,9 @@ Forward proxy sits between the client and the internet. Client requests a resour
 # Reverse Proxy
 Reverse proxy sits between the internet and the server. The response from server goes to proxy then to the client. It helps us to hide the original server from direct client access. Nginix is a reverse proxy server.
 
+# Many - Many Association
+ 1. A user can have many roles.
+ 2. A role can have many users.
+ Example: A user can be customer, admin, employee, etc. There can be multiple admins, customers, employees, etc.
+
+ To implement many to many association, we need to create a `through` or `join` table. This table will have foreign keys of both the tables.
