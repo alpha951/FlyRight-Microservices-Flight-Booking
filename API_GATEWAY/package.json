@@ -14,6 +14,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-rate-limit": "^6.11.0",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.2.0",
@@ -23,5 +24,8 @@
     "sequelize": "^6.31.1",
     "sequelize-cli": "^6.6.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^2.0.6"
   }
 }
