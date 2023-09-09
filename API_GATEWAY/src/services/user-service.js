@@ -86,4 +86,42 @@ async function isAuthenticated(token) {
   }
 }
 
-module.exports = { create, signin, isAuthenticated };
+async function addRoleToUser(data) {
+  try {
+    const user = await userRepo.get(data.id);
+    if (!user) {
+      throw new AppError("User not found!", StatusCodes.NOT_FOUND);
+    }
+    const role = await roleRepo.getRoleByName(data.role);
+    if (!role) {
+      throw new AppError("Role not found!", StatusCodes.NOT_FOUND);
+    }
+    user.addRole(role);
+    return user;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      "Something went wrong while adding role to the user!",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function isAdmin(id) {
+  try {
+    const user = await userRepo.get(id);
+    if (!user) {
+      throw new AppError("User not found!", StatusCodes.NOT_FOUND);
+    }
+    const adminrole = await roleRepo.getRoleByName(ADMIN);
+    if (!adminrole) {
+      throw new AppError("Admin role not found!", StatusCodes.NOT_FOUND);
+    }
+    return user.hasRole(adminrole);
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw error;
+  }
+}
+
+module.exports = { create, signin, isAuthenticated, isAdmin };
