@@ -27,4 +27,7 @@ Non functional Requirements
 1.  NodeJS
 2.  ExpressJS
 3.  MySQL
-4. Sequelize
+4.  Sequelize
+5.  RabbitMQ
+6.  NodeMailer
+7.  JWT
