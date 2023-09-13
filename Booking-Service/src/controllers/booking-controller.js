@@ -3,6 +3,9 @@ const { StatusCodes } = require("http-status-codes");
 const { BookingService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 
+// This is a temporary in-memory database to store the idempotent key. We are using memoization to store the idempotent key. This is not a good practice. We should use a database like Redis to store the idempotent key.
+// Once the server restarts, the inMemDb will be empty. So, we will  be able to process the same payment request again. This is the reason why we should use a database like Redis to store the idempotent key.
+
 const inMemDb = {};
 
 async function createBooking(req, res) {
