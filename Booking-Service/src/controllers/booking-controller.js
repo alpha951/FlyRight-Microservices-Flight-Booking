@@ -29,12 +29,6 @@ async function makePayment(req, res) {
   try {
     const idempotentKey = req.headers["idempotent-key"];
 
-    if (!idempotentKey) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: "Idempotent key is missing" });
-    }
-
     if (inMemDb[idempotentKey]) {
       return res
         .status(StatusCodes.BAD_REQUEST)
