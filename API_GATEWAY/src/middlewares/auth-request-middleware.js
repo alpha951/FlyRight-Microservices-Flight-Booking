@@ -67,9 +67,30 @@ async function checkFlightCompany(req, res, next) {
   }
 }
 
+function validateAddRoleRequest(req, res, next) {
+  if (!req.body.role) {
+    ErrorResponse.message = "Failed to add a role to the user";
+    ErrorResponse.error = new AppError(
+      ["The Role was not found in the incoming request"],
+      StatusCodes.BAD_REQUEST
+    );
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+  if (!req.body.id) {
+    ErrorResponse.message = "Failed to add a role to the user";
+    ErrorResponse.error = new AppError(
+      ["The User ID was not found in the incoming request"],
+      StatusCodes.BAD_REQUEST
+    );
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+  next();
+}
+
 module.exports = {
   validateAuthRequest,
   checkAuth,
   checkAdmin,
   checkFlightCompany,
+  validateAddRoleRequest,
 };

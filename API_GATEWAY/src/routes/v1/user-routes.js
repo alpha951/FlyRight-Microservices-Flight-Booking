@@ -20,6 +20,7 @@ router.post(
   "/role",
   AuthMiddlewares.checkAuth,
   AuthMiddlewares.checkAdmin,
+  AuthMiddlewares.validateAddRoleRequest,
   UserControllers.addRoleToUser
 );
 
