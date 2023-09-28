@@ -14,14 +14,15 @@ async function connectQueue() {
     const channel = await connection.createChannel();
     channel.consume("NOTIFICATION_QUEUE", async (data) => {
       console.log(`${Buffer.from(data.content)}`);
-      const { recipientEmail, subject, text } = JSON.parse(
+      const { recipientEmail, subject, text, html } = JSON.parse(
         Buffer.from(data.content)
       );
       await emailService.sendEmail(
         process.env.GMAIL_ID,
         recipientEmail,
         subject,
-        text
+        text,
+        html
       );
       channel.ack(data);
     });
