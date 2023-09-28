@@ -4,6 +4,7 @@ const rateLimit = require("express-rate-limit");
 
 const { ServerConfig } = require("./config");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const { AuthMiddlewares } = require("./middlewares");
 const apiRoutes = require("./routes");
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(limiter);
 
 app.use(
   "/flightService",
+  AuthMiddlewares.checkAuth,
   createProxyMiddleware({
     target: ServerConfig.FLIGHT_SERVICE,
     changeOrigin: true,
