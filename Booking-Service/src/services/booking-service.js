@@ -55,7 +55,6 @@ async function createBooking(data) {
 async function makePayment(data) {
   const transaction = await db.sequelize.transaction();
   try {
-    console.log(data);
     const bookingDetails = await bookingRepository.get(
       data.bookingId,
       transaction
@@ -99,25 +98,19 @@ async function makePayment(data) {
       todo : Send email to user
     */
     const flight = await axios.get(
-      `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
+      `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}`
     );
     const flightData = flight.data.data;
 
-    const data = {
-      flightId: bookingDetails.flightId,
-      noOfSeats: bookingDetails.noOfSeats,
-      departure: flightData.departureAirportId,
-      arrival: flightData.arrivalAirportId,
-    };
-
     Queue.sendData({
       recipientEmail: "20uec068@lnmiit.ac.in",
-      text: EmailTemplate(
+      html: EmailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
         flightData
       ),
-      subject: "Flight Booked",
+      text: "it's a plain text since html is not working",
+      subject: `Confirmation : Your flight has been booked for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
     });
 
     return response;
