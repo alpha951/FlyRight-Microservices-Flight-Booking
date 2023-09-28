@@ -14,6 +14,7 @@ const { ADMIN, CUSTOMER, FLIGHT_COMPANY } = ROLE;
 
 const userRepo = new UserRepository();
 const roleRepo = new RoleRepository();
+
 async function create(data) {
   try {
     const user = await userRepo.create(data);
