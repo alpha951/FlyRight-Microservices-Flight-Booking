@@ -19,7 +19,9 @@ async function sendData(data) {
       "NOTIFICATION_QUEUE",
       Buffer.from(JSON.stringify(data))
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = { connectQueue, sendData };
