@@ -5,7 +5,10 @@ const ticketRepo = new TicketRepository();
 async function sendEmail(mailFrom, mailTo, subject, text, html) {
   try {
     const response = await mailsender.sendMail({
-      from: mailFrom,
+      from: {
+        name: "FlyRight Airlines",
+        address: mailFrom,
+      },
       to: mailTo,
       subject: subject,
       text: text,
