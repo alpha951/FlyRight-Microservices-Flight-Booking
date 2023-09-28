@@ -124,4 +124,4 @@ async function isAdmin(id) {
   }
 }
 
-module.exports = { create, signin, isAuthenticated, isAdmin };
+module.exports = { create, signin, isAuthenticated, isAdmin, addRoleToUser };
