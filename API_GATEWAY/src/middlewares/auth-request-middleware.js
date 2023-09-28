@@ -52,4 +52,19 @@ async function checkAdmin(req, res, next) {
   }
 }
 
-module.exports = { validateAuthRequest, checkAuth, checkAdmin };
+async function checkFlightCompany(req, res, next) {
+  try {
+    const response = await UserService.isFlightCompany(req.user);
+    if (response) {
+      next();
+    }
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: "User not authorized to perform the action" });
+  } catch (error) {
+    console.log(error);
+    return res.status(error.statusCode).json(error);
+  }
+}
+
+module.exports = { validateAuthRequest, checkAuth, checkFlightCompany };
