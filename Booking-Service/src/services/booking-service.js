@@ -9,7 +9,7 @@ const { Queue } = require("../config");
 
 const db = require("../models");
 
-const { Enums } = require("../utils/common");
+const { Enums, EmailTemplate } = require("../utils/common");
 const { BOOKED, CANCELLED, INITIATED } = Enums.BOOKING_STATUS;
 
 const bookingRepository = new BookingRepository();
@@ -93,9 +93,30 @@ async function makePayment(data) {
     );
     console.log("response inside booking/payment service", response);
     await transaction.commit();
+
+    /*
+      @alpha951
+      todo : Send email to user
+    */
+    const flight = await axios.get(
+      `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
+    );
+    const flightData = flight.data.data;
+
+    const data = {
+      flightId: bookingDetails.flightId,
+      noOfSeats: bookingDetails.noOfSeats,
+      departure: flightData.departureAirportId,
+      arrival: flightData.arrivalAirportId,
+    };
+
     Queue.sendData({
       recipientEmail: "20uec068@lnmiit.ac.in",
-      text: `Booking has been created for ${bookingDetails.flightId} with ${bookingDetails.noOfSeats}`,
+      text: EmailTemplate(
+        bookingDetails.flightId,
+        bookingDetails.noOfSeats,
+        flightData
+      ),
       subject: "Flight Booked",
     });
 
