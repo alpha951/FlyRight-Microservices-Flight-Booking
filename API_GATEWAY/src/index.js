@@ -25,6 +25,7 @@ app.use(limiter);
 app.use(
   "/flightService",
   AuthMiddlewares.checkAuth,
+  AuthMiddlewares.checkRights,
   createProxyMiddleware({
     target: ServerConfig.FLIGHT_SERVICE,
     changeOrigin: true,
@@ -34,6 +35,7 @@ app.use(
 
 app.use(
   "/bookingService",
+  AuthMiddlewares.checkAuth,
   createProxyMiddleware({
     target: ServerConfig.BOOKING_SERVICE,
     changeOrigin: true,

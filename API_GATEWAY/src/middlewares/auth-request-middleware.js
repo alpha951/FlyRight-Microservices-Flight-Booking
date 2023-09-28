@@ -87,10 +87,24 @@ function validateAddRoleRequest(req, res, next) {
   next();
 }
 
+async function checkRights(req, res, next) {
+  const response1 = await UserService.isAdmin(req.user);
+  const response2 = await UserService.isFlightCompany(req.user);
+  if (req.method === "GET" || response1 || response2) {
+    return next();
+  } else {
+    // Deny access for non-admin users trying to perform create, update or delete operations
+    ErrorResponse.message = "Access denied";
+    ErrorResponse.explanation = "User is not authorized to perform this action";
+    return res.status(StatusCodes.FORBIDDEN).json({ message: "Access denied" });
+  }
+}
+
 module.exports = {
   validateAuthRequest,
   checkAuth,
   checkAdmin,
   checkFlightCompany,
   validateAddRoleRequest,
+  checkRights,
 };
