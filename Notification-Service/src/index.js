@@ -10,7 +10,7 @@ const { emailService } = require("./services");
 async function connectQueue() {
   try {
     const connection = await amqplib.connect("amqp://127.0.0.1");
-    // console.log("connected to queue");
+    console.log("connected to queue");
     const channel = await connection.createChannel();
     channel.consume("NOTIFICATION_QUEUE", async (data) => {
       console.log(`${Buffer.from(data.content)}`);
