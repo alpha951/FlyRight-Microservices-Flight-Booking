@@ -67,4 +67,9 @@ async function checkFlightCompany(req, res, next) {
   }
 }
 
-module.exports = { validateAuthRequest, checkAuth, checkFlightCompany };
+module.exports = {
+  validateAuthRequest,
+  checkAuth,
+  checkAdmin,
+  checkFlightCompany,
+};
