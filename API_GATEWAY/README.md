@@ -35,3 +35,9 @@ Reverse proxy sits between the internet and the server. The response from server
  Example: A user can be customer, admin, employee, etc. There can be multiple admins, customers, employees, etc.
 
  To implement many to many association, we need to create a `through` or `join` table. This table will have foreign keys of both the tables.
+
+
+<img src="./SS.PNG"  width="350" height="200">
+
+
+- [M:N Associations Sequelize DOCs](https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/)
