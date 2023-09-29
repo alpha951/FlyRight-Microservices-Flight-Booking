@@ -127,11 +127,12 @@ async function cancelBooking(data) {
       data.bookingId,
       transaction
     );
+    // If booking status is already cancelled
     if (bookingDetails.status === CANCELLED) {
       await transaction.commit();
       return true;
     }
-
+    // making a call to flight service to increase the seats
     await axios.patch(
       `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}/seats`,
       {
@@ -139,6 +140,7 @@ async function cancelBooking(data) {
         dec: 0,
       }
     );
+    // marking the booking as cancelled
     await bookingRepository.update(
       data.bookingId,
       { status: CANCELLED },
