@@ -58,4 +58,21 @@ async function makePayment(req, res) {
   }
 }
 
-module.exports = { createBooking, makePayment };
+// TODO: Add a function to get all bookings of a user
+
+async function getAllBookings(req, res) {
+  try {
+    const bookings = await BookingService.getAllBookings(req.params.userId);
+    SuccessResponse.data = bookings;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.SERVICE_UNAVAILABLE).json(ErrorResponse);
+  }
+}
+
+// TODO: Add a function to update a booking
+
+async function updateBooking(req, res) {}
+
+module.exports = { createBooking, makePayment, getAllBookings, updateBooking };
