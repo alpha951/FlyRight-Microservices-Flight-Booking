@@ -69,4 +69,16 @@ async function getAllBookings(req, res) {
   }
 }
 
-module.exports = { createBooking, makePayment, getAllBookings };
+async function cancelBooking(req, res) {
+  try {
+    const data = { bookingId: req.params.bookingId, userId: req.user };
+    const booking = await BookingService.cancelBooking(data);
+    SuccessResponse.data = booking;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.SERVICE_UNAVAILABLE).json(ErrorResponse);
+  }
+}
+
+module.exports = { createBooking, makePayment, getAllBookings, cancelBooking };

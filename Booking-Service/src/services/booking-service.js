@@ -68,7 +68,7 @@ async function makePayment(data) {
     const currentTime = new Date();
 
     if (currentTime - bookingTime > 300000) {
-      await cancelBooking(data.bookingId);
+      await cancelBooking(data);
       throw new AppError("Booking has expired", StatusCodes.BAD_REQUEST);
     }
 
@@ -104,7 +104,7 @@ async function makePayment(data) {
 
     Queue.sendData({
       recipientEmail: "20uec068@lnmiit.ac.in",
-      html: EmailTemplate(
+      html: EmailTemplate.BookingMailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
         flightData
@@ -147,6 +147,22 @@ async function cancelBooking(data) {
       transaction
     );
     await transaction.commit();
+
+    const flight = await axios.get(
+      `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}`
+    );
+    const flightData = flight.data.data;
+
+    Queue.sendData({
+      recipientEmail: "20uec068@lnmiit.ac.in",
+      html: EmailTemplate.CancelBookingMailTemplate(
+        bookingDetails.flightId,
+        bookingDetails.noOfSeats,
+        flightData
+      ),
+      text: "it's a plain text since html is not working",
+      subject: `Cancellation : Your flight has been cancelled for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
+    });
   } catch (error) {
     await transaction.rollback();
     throw error;
@@ -181,4 +197,5 @@ module.exports = {
   makePayment,
   cancelOldBookings,
   getAllBookings,
+  cancelBooking,
 };

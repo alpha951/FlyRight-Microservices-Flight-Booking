@@ -16,6 +16,8 @@ router.post(
   BookingController.makePayment
 );
 
+router.post("/cancel/:bookingId", BookingController.cancelBooking);
+
 router.get("/:userId", BookingController.getAllBookings);
 
 module.exports = router;
