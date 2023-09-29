@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 15 minutes
+  windowMs: 1 * 60 * 1000, // 1 minute
   max: 20, // Limit each IP to 20 requests per `window` (here, per 1 minutes)
   standardHeaders: "draft-7", // draft-6: RateLimit-* headers; draft-7: combined RateLimit header
   legacyHeaders: false, // X-RateLimit-* headers
@@ -22,10 +22,10 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+// READ requests are allowed by all the users but to perform write action user_role has to be `admin` or `flight_company`
 app.use(
   "/flightService",
-  AuthMiddlewares.checkAuth,
-  AuthMiddlewares.checkRights,
+  [AuthMiddlewares.checkAuth, AuthMiddlewares.checkRights],
   createProxyMiddleware({
     target: ServerConfig.FLIGHT_SERVICE,
     changeOrigin: true,
