@@ -58,8 +58,6 @@ async function makePayment(req, res) {
   }
 }
 
-// TODO: Add a function to get all bookings of a user
-
 async function getAllBookings(req, res) {
   try {
     const bookings = await BookingService.getAllBookings(req.params.userId);
@@ -71,8 +69,4 @@ async function getAllBookings(req, res) {
   }
 }
 
-// TODO: Add a function to update a booking
-
-async function updateBooking(req, res) {}
-
-module.exports = { createBooking, makePayment, getAllBookings, updateBooking };
+module.exports = { createBooking, makePayment, getAllBookings };
