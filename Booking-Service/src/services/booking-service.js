@@ -18,7 +18,7 @@ async function createBooking(data) {
   const transaction = await db.sequelize.transaction();
   try {
     console.log("Requesting flight service...");
-
+    // ! Fetching data from FLIGT MICROSERVICE using Axios
     const flight = await axios.get(
       `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
     );
@@ -161,4 +161,22 @@ async function cancelOldBookings() {
   }
 }
 
-module.exports = { createBooking, makePayment, cancelOldBookings };
+async function getAllBookings(userId) {
+  try {
+    const response = await bookingRepository.getAllBookings(userId);
+    return response;
+  } catch (error) {
+    console.log("Error in Booking-service getAllBookings", error);
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw error;
+  }
+}
+
+module.exports = {
+  createBooking,
+  makePayment,
+  cancelOldBookings,
+  getAllBookings,
+};
