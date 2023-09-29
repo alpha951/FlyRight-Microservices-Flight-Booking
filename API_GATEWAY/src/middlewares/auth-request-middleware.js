@@ -41,7 +41,7 @@ async function checkAuth(req, res, next) {
 
 async function checkAdmin(req, res, next) {
   try {
-    const response = await UserService.isAdmin(req.user);
+    const response = await UserService.isAdmin(req.user.id);
     if (response) {
       next();
     }
@@ -56,7 +56,7 @@ async function checkAdmin(req, res, next) {
 
 async function checkFlightCompany(req, res, next) {
   try {
-    const response = await UserService.isFlightCompany(req.user);
+    const response = await UserService.isFlightCompany(req.user.id);
     if (response) {
       next();
     }
@@ -90,8 +90,8 @@ function validateAddRoleRequest(req, res, next) {
 }
 
 async function checkRights(req, res, next) {
-  const response1 = await UserService.isAdmin(req.user);
-  const response2 = await UserService.isFlightCompany(req.user);
+  const response1 = await UserService.isAdmin(req.user.id);
+  const response2 = await UserService.isFlightCompany(req.user.id);
   console.log(req.method, response1, response2);
   if (req.method === "GET" || response1 || response2) {
     return next();
