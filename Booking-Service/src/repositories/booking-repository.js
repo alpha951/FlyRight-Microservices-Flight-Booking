@@ -74,6 +74,21 @@ class BookingRepository extends CrudRepository {
     );
     return response;
   }
+
+  async getAllBookings(userId) {
+    const response = await this.model.findAll({
+      where: {
+        userId: userId,
+      },
+    });
+    if (!response) {
+      throw new AppError(
+        "Not able to find the bookings ",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return response;
+  }
 }
 
 module.exports = BookingRepository;
