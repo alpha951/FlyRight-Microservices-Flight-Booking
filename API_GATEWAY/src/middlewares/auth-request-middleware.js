@@ -23,10 +23,11 @@ async function checkAuth(req, res, next) {
     const response = await UserService.isAuthenticated(
       req.headers["x-access-token"]
     );
-    console.log(response);
     if (response) {
+      console.log("response verified jwt :", response);
       req.user = response; // Add user_id to the request object
       next();
+      console.log("I'm after next");
     } else {
       return res
         .status(StatusCodes.UNAUTHORIZED)

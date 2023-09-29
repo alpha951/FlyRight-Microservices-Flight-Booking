@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const { ServerConfig, mailsender } = require("./config");
+const { ServerConfig } = require("./config");
 const apiRoutes = require("./routes");
 const amqplib = require("amqplib");
 
@@ -13,7 +13,6 @@ async function connectQueue() {
     console.log("connected to queue");
     const channel = await connection.createChannel();
     channel.consume("NOTIFICATION_QUEUE", async (data) => {
-      console.log(`${Buffer.from(data.content)}`);
       const { recipientEmail, subject, text, html } = JSON.parse(
         Buffer.from(data.content)
       );

@@ -30,7 +30,6 @@ async function sendEmail(req, res) {
     res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    console.log("Found error obj inside email controller -----", error);
     return res.status(StatusCodes.SERVICE_UNAVAILABLE).json(ErrorResponse);
   }
 }
