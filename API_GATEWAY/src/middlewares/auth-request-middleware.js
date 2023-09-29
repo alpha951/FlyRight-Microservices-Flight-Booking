@@ -25,6 +25,7 @@ async function checkAuth(req, res, next) {
     );
     console.log(response);
     if (response) {
+      console.log("here we go");
       req.user = response; // Add user_id to the request object
       next();
     }
@@ -90,6 +91,7 @@ function validateAddRoleRequest(req, res, next) {
 async function checkRights(req, res, next) {
   const response1 = await UserService.isAdmin(req.user);
   const response2 = await UserService.isFlightCompany(req.user);
+  console.log(req.method, response1, response2);
   if (req.method === "GET" || response1 || response2) {
     return next();
   } else {
