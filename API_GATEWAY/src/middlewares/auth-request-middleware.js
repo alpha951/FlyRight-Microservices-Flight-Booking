@@ -25,13 +25,13 @@ async function checkAuth(req, res, next) {
     );
     console.log(response);
     if (response) {
-      console.log("here we go");
       req.user = response; // Add user_id to the request object
       next();
+    } else {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
     }
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Unauthorized" });
   } catch (error) {
     console.log(error);
     return res.status(error.statusCode).json(error);
