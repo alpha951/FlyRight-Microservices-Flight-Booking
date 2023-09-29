@@ -16,4 +16,6 @@ router.post(
   BookingController.makePayment
 );
 
+router.get("/:userId", BookingController.getAllBookings);
+
 module.exports = router;
