@@ -48,6 +48,8 @@ async function checkAuth(req, res, next) {
     // console.log("Response from checkAtuh :", response);
     if (response) {
       req.user = response; // setting the user id in the req object
+      req.headers["user-info"] = response;
+      console.log("user-info", req.headers["user-info"]);
       console.log("req.user printing", req.user);
       next();
     }
