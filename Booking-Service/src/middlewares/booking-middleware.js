@@ -1,7 +1,14 @@
 const { StatusCodes } = require("http-status-codes");
-
+const { Auth } = require("../utils/common");
 const { ErrorResponse } = require("../utils/common");
 const AppError = require("../utils/errors/app-error");
+
+function deCipherUserInfo(req, res, next) {
+  const response = Auth.verifyToken(req.headers["x-access-token"]);
+  req.user = response;
+  console.log("req.user", req.user);
+  next();
+}
 
 function validateBooking(req, res, next) {
   console.log("REQUEST INSIDE BOOKING_MIDDLEWARE", req.body);
@@ -14,7 +21,7 @@ function validateBooking(req, res, next) {
     return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
   }
 
-  if (!req.body.userId) {
+  if (!req.user.id) {
     ErrorResponse.message = "Failed to process booking";
     ErrorResponse.error = new AppError(
       ["userId was not found in the incoming request"],
@@ -47,4 +54,4 @@ function validatePayment(req, res, next) {
   next();
 }
 
-module.exports = { validateBooking, validatePayment };
+module.exports = { validateBooking, validatePayment, deCipherUserInfo };

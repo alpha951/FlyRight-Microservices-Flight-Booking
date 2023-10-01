@@ -10,9 +10,10 @@ const inMemDb = {};
 
 async function createBooking(req, res) {
   try {
+    console.log(req.user);
     const booking = await BookingService.createBooking({
       flightId: req.body.flightId,
-      userId: req.body.userId,
+      userInfo: req.user,
       noOfSeats: req.body.noOfSeats,
     });
     SuccessResponse.data = booking;
@@ -40,7 +41,7 @@ async function makePayment(req, res) {
 
     const booking = await BookingService.makePayment({
       bookingId: req.body.bookingId,
-      userId: req.body.userId,
+      userInfo: req.user,
       totalCost: req.body.totalCost,
     });
 
@@ -71,7 +72,7 @@ async function getAllBookings(req, res) {
 
 async function cancelBooking(req, res) {
   try {
-    const data = { bookingId: req.params.bookingId, userId: req.body.userId };
+    const data = { bookingId: req.params.bookingId, userInfo: req.user };
     const booking = await BookingService.cancelBooking(data);
     SuccessResponse.data = booking;
     return res.status(StatusCodes.OK).json(SuccessResponse);

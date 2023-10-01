@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { ServerConfig } = require("../../config");
 
-
 function verifyToken(token) {
   try {
     const response = jwt.verify(token, ServerConfig.JWT_SECRET);
@@ -12,4 +11,4 @@ function verifyToken(token) {
   }
 }
 
-module.exports = { checkPassword, createToken, verifyToken };
+module.exports = { verifyToken };

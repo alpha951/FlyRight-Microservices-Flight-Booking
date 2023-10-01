@@ -20,7 +20,7 @@ async function createBooking(data) {
   const transaction = await db.sequelize.transaction();
   try {
     console.log("Requesting flight service...");
-    // ! Fetching data from FLIGT MICROSERVICE using Axios
+    // ! Fetching data from FLIGHT MICROSERVICE using Axios
     const flight = await axios.get(
       `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
     );
@@ -33,7 +33,12 @@ async function createBooking(data) {
     const totalBillingAmount = data.noOfSeats * flightData.price;
     console.log(totalBillingAmount);
 
-    const bookingPayload = { ...data, totalCost: totalBillingAmount };
+    const bookingPayload = {
+      flightId: data.flightId,
+      noOfSeats: data.noOfSeats,
+      userId: data.userInfo.id,
+      totalCost: totalBillingAmount,
+    };
 
     const booking = await bookingRepository.create(bookingPayload, transaction);
 
@@ -66,7 +71,7 @@ async function makePayment(data) {
       throw new AppError("Booking has expired", StatusCodes.BAD_REQUEST);
     }
 
-    if (bookingDetails.userId != data.userId) {
+    if (bookingDetails.userId != data.userInfo.id) {
       throw new AppError("User Id does not match", StatusCodes.BAD_REQUEST);
     }
 
@@ -85,7 +90,7 @@ async function makePayment(data) {
       );
     }
 
-    if (bookingDetails.userId != data.userId) {
+    if (bookingDetails.userId != data.userInfo.id) {
       throw new AppError("User Id does not match", StatusCodes.BAD_REQUEST);
     }
 
@@ -105,20 +110,23 @@ async function makePayment(data) {
       `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}`
     );
     const flightData = flight.data.data;
+    // Removing DB query to get the user-info rather using jwt-token info
     // ! Making DB Query using Sequelize
+    /*
     const user = await db.sequelize.query(
       `SELECT * FROM Users WHERE id = ${data.userId}`,
       {
         type: QueryTypes.SELECT,
       }
     );
+    */
     Queue.sendData({
-      recipientEmail: user[0].email,
+      recipientEmail: data.userInfo.email,
       html: EmailTemplate.BookingMailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
         flightData,
-        user[0].email
+        data.userInfo.email
       ),
       text: "it's a plain text since html is not working",
       subject: `Confirmation : Your flight has been booked for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
@@ -145,7 +153,7 @@ async function cancelBooking(data) {
       return true;
     }
 
-    if (bookingDetails.userId != data.userId) {
+    if (bookingDetails.userId != data.userInfo.id) {
       throw new AppError("User Id does not match", StatusCodes.BAD_REQUEST);
     }
 
@@ -169,20 +177,22 @@ async function cancelBooking(data) {
     );
     const flightData = flight.data.data;
 
+    // Avoiding DB query to get user info rather using decipher info from jwt
+    /*
     const user = await db.sequelize.query(
       `SELECT * FROM Users WHERE id = ${data.userId}`,
       {
         type: QueryTypes.SELECT,
       }
     );
-    console.log(user);
+    */
     Queue.sendData({
-      recipientEmail: user[0].email,
+      recipientEmail: data.userInfo.email,
       html: EmailTemplate.CancelBookingMailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
         flightData,
-        user[0].email
+        data.userInfo.email
       ),
       text: "it's a plain text since html is not working",
       subject: `Cancellation : Your flight has been cancelled for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
