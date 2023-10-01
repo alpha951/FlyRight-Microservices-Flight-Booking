@@ -70,6 +70,7 @@ async function isAuthenticated(token) {
     }
 
     const response = verifyToken(token);
+    console.log("verifyToken response", response);
     const user = await userRepo.get(response.id);
     if (!user) {
       throw new AppError("User not found!", StatusCodes.NOT_FOUND);
