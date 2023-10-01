@@ -130,7 +130,7 @@ function BookingMailTemplate(
               </li>
           </ul>
           
-          <p>We hope you have a pleasant flight experience with us. Should you have any questions or require further assistance, please do not hesitate to contact our customer support team at <a href="mailto:flyRight.support@gmail.com">flyRight.support@gmail.com</a>.</p>
+          <p>We hope you have a pleasant flight experience with us. Should you have any questions or require further assistance, please do not hesitate to contact our customer support team at <a href="mailto:flyRight.support@gmail.com">support.flyRight@gmail.com</a>.</p>
           
           <img src="https://www.flyrightinc.com/wp-content/uploads/2017/10/FlyRight-Logo-Tag-blk-fade-01-01.png" alt="FlyRight Airline Logo">
           
@@ -230,7 +230,7 @@ function CancelBookingMailTemplate(flightId, noOfSeats, flightData, email) {
             
             <p>We hope this email finds you well. We would like to confirm that your flight reservation has been successfully canceled as per your request. </p>
             <div id = "flightDetails">
-            <h2>Booking Details:</h2>
+            <h2>Cancellation Details:</h2>
             <p>Flight Number: ${flightId}</p>
             <p>Departure: ${
               flightData.departureAirportId
@@ -246,12 +246,18 @@ function CancelBookingMailTemplate(flightId, noOfSeats, flightData, email) {
             <p>Total Seat(s) Cancelled: ${noOfSeats}</p>
             </div>
             <p>
-            We have processed your cancellation request, and we understand that circumstances can change unexpectedly, leading to the need for a flight cancellation. While we regret that you won't be able to travel with us on the scheduled date, we appreciate your cooperation in informing us promptly.
-
+            We have processed your cancellation request, and we understand that circumstances can change unexpectedly, leading to the need for a flight cancellation. While we regret that you won't be able to travel with us on the scheduled date, we appreciate your cooperation in informing us promptly. </p>
+            <br/>
+            <p>
             Regarding your refund, we are pleased to inform you that you are eligible for a refund in accordance with the fare conditions associated with your ticket. Our refund department will initiate the refund process, which may take a few business days to reflect in your account. Please note that the refund amount may be subject to any applicable fees or charges as per the fare rules.
+            </p>
 
-            We understand that having a written confirmation of the flight cancellation is essential for your records. Attached to this email, you will find a confirmation document outlining the cancellation details and refund information. Please review it carefully, and if you have any questions or require further clarification, feel free to contact our customer service team at flyRight.support@gmail.com. They will be more than happy to assist you.
-
+            <br/>
+            <p>
+            We understand that having a written confirmation of the flight cancellation is essential for your records. Attached to this email, you will find a confirmation document outlining the cancellation details and refund information. Please review it carefully, and if you have any questions or require further clarification, feel free to contact our customer service team at support.flyRight@gmail.com. They will be more than happy to assist you.
+            </p>
+            <br/>
+            <p>
             Once again, we apologize for any inconvenience caused by the cancellation. We value your patronage and hope to serve you in the future under more favorable circumstances. If there is anything else we can assist you with, please do not hesitate to reach out to us.
             We appreciate your understanding and cooperation.
             </p>
