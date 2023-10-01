@@ -31,11 +31,6 @@ function formatDateAndTimeWithDayName(timestamp) {
   return formattedDateTime;
 }
 
-const timestamp = "2022-09-12T23:03:12.000Z";
-const formattedDateTime = formatDateAndTimeWithDayName(timestamp);
-
-console.log(formattedDateTime); // Output: '12-09-2022 at 23:03:12 on Monday'
-
 module.exports = {
   compareTime,
   formatDateAndTimeWithDayName,
