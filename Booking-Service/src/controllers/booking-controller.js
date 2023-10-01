@@ -71,7 +71,7 @@ async function getAllBookings(req, res) {
 
 async function cancelBooking(req, res) {
   try {
-    const data = { bookingId: req.params.bookingId, userId: req.user };
+    const data = { bookingId: req.params.bookingId, userId: req.body.userId };
     const booking = await BookingService.cancelBooking(data);
     SuccessResponse.data = booking;
     return res.status(StatusCodes.OK).json(SuccessResponse);

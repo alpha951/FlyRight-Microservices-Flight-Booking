@@ -21,7 +21,7 @@ app.use(
 
 app.use(
   "/bookingService",
-  AuthMiddlewares.checkAuth,
+  [AuthMiddlewares.checkAuth],
   createProxyMiddleware({
     target: ServerConfig.BOOKING_SERVICE,
     changeOrigin: true,
@@ -30,6 +30,7 @@ app.use(
 );
 
 // If you keep these lines above proxy then POST requests doesn't work
+
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));

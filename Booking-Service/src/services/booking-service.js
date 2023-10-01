@@ -14,6 +14,8 @@ const { BOOKED, CANCELLED, INITIATED } = Enums.BOOKING_STATUS;
 
 const bookingRepository = new BookingRepository();
 
+const { Sequelize, QueryTypes } = require("sequelize");
+
 async function createBooking(data) {
   const transaction = await db.sequelize.transaction();
   try {
@@ -64,6 +66,10 @@ async function makePayment(data) {
       throw new AppError("Booking has expired", StatusCodes.BAD_REQUEST);
     }
 
+    if (bookingDetails.userId != data.userId) {
+      throw new AppError("User Id does not match", StatusCodes.BAD_REQUEST);
+    }
+
     const bookingTime = new Date(bookingDetails.createdAt);
     const currentTime = new Date();
 
@@ -91,27 +97,33 @@ async function makePayment(data) {
       transaction
     );
     console.log("response inside booking/payment service", response);
-    await transaction.commit();
 
     /*
-      @alpha951
       todo : Send email to user
-    */
+      */
     const flight = await axios.get(
       `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}`
     );
     const flightData = flight.data.data;
-
+    // ! Making DB Query using Sequelize
+    const user = await db.sequelize.query(
+      `SELECT * FROM Users WHERE id = ${data.userId}`,
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
     Queue.sendData({
-      recipientEmail: "20uec068@lnmiit.ac.in",
+      recipientEmail: user[0].email,
       html: EmailTemplate.BookingMailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
-        flightData
+        flightData,
+        user[0].email
       ),
       text: "it's a plain text since html is not working",
       subject: `Confirmation : Your flight has been booked for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
     });
+    await transaction.commit();
 
     return response;
   } catch (error) {
@@ -132,9 +144,14 @@ async function cancelBooking(data) {
       await transaction.commit();
       return true;
     }
+
+    if (bookingDetails.userId != data.userId) {
+      throw new AppError("User Id does not match", StatusCodes.BAD_REQUEST);
+    }
+
     // making a call to flight service to increase the seats
     await axios.patch(
-      `${FLIGHT_SERVICE}/api/v1/flights/${data.flightId}/seats`,
+      `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}/seats`,
       {
         seats: bookingDetails.noOfSeats,
         dec: 0,
@@ -146,23 +163,31 @@ async function cancelBooking(data) {
       { status: CANCELLED },
       transaction
     );
-    await transaction.commit();
 
     const flight = await axios.get(
       `${FLIGHT_SERVICE}/api/v1/flights/${bookingDetails.flightId}`
     );
     const flightData = flight.data.data;
 
+    const user = await db.sequelize.query(
+      `SELECT * FROM Users WHERE id = ${data.userId}`,
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
+    console.log(user);
     Queue.sendData({
-      recipientEmail: "20uec068@lnmiit.ac.in",
+      recipientEmail: user[0].email,
       html: EmailTemplate.CancelBookingMailTemplate(
         bookingDetails.flightId,
         bookingDetails.noOfSeats,
-        flightData
+        flightData,
+        user[0].email
       ),
       text: "it's a plain text since html is not working",
       subject: `Cancellation : Your flight has been cancelled for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
     });
+    await transaction.commit();
   } catch (error) {
     await transaction.rollback();
     throw error;

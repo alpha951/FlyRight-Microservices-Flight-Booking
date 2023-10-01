@@ -1,6 +1,11 @@
 const { formatDateAndTimeWithDayName } = require("../helpers/datetime-helper");
 
-function BookingMailTemplate(flightId, noOfSeats, flightData) {
+function BookingMailTemplate(
+  flightId,
+  noOfSeats,
+  flightData,
+  email = "20uec068@lnmiit.ac.in"
+) {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -82,7 +87,7 @@ function BookingMailTemplate(flightId, noOfSeats, flightData) {
   </head>
   <body>
       <div class="container">
-          <h1>Dear Customer,</h1>
+          <h3>Dear ${email.split("@")[0]},</h3>
           
           <p>We are pleased to inform you that your flight has been successfully booked. We understand the importance of your travel plans, and we are excited to be a part of your journey.</p>
           <div id = "flightDetails">
@@ -139,7 +144,7 @@ function BookingMailTemplate(flightId, noOfSeats, flightData) {
       `;
 }
 
-function CancelBookingMailTemplate(flightId, noOfSeats, flightData) {
+function CancelBookingMailTemplate(flightId, noOfSeats, flightData, email) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -221,7 +226,7 @@ function CancelBookingMailTemplate(flightId, noOfSeats, flightData) {
     </head>
     <body>
         <div class="container">
-            <h1>Dear Customer,</h1>
+            <h3>Dear ${email.split("@")[0]},</h3>
             
             <p>We hope this email finds you well. We would like to confirm that your flight reservation has been successfully canceled as per your request. </p>
             <div id = "flightDetails">

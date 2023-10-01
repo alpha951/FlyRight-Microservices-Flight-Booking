@@ -70,12 +70,11 @@ async function isAuthenticated(token) {
     }
 
     const response = verifyToken(token);
-    console.log(response);
     const user = await userRepo.get(response.id);
     if (!user) {
       throw new AppError("User not found!", StatusCodes.NOT_FOUND);
     }
-    return user;
+    return user.id;
   } catch (error) {
     if (error instanceof AppError) throw error;
     if (error.name == "JsonWebTokenError") {

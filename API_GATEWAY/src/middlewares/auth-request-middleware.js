@@ -17,25 +17,44 @@ function validateAuthRequest(req, res, next) {
   next();
 }
 
+// async function checkAuth(req, res, next) {
+//   try {
+//     console.log(req.headers["x-access-token"]);
+//     const response = await UserService.isAuthenticated(
+//       req.headers["x-access-token"]
+//     );
+//     if (response) {
+//       console.log("req.body is ", req.body);
+//       req.body.userData = response.dataValues; // Add user_id to the request object
+//       console.log(req.body.userData);
+//       next();
+//       console.log("I'm after next");
+//     } else {
+//       return res
+//         .status(StatusCodes.UNAUTHORIZED)
+//         .json({ message: "Unauthorized" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+//   }
+// }
+
 async function checkAuth(req, res, next) {
   try {
-    console.log(req.headers["x-access-token"]);
     const response = await UserService.isAuthenticated(
       req.headers["x-access-token"]
     );
+    // console.log("Response from checkAtuh :", response);
     if (response) {
-      console.log("response verified jwt :", response);
-      req.user = response; // Add user_id to the request object
+      req.user = response; // setting the user id in the req object
+      console.log("req.user printing", req.user);
       next();
-      console.log("I'm after next");
-    } else {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: "Unauthorized" });
     }
   } catch (error) {
     console.log(error);
-    return res.status(error.statusCode).json(error);
+    if (error.statusCode) return res.status(error.statusCode).json(error);
+    return res.status(StatusCodes.FORBIDDEN).json(error);
   }
 }
 

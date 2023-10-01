@@ -4,6 +4,7 @@ const { ErrorResponse } = require("../utils/common");
 const AppError = require("../utils/errors/app-error");
 
 function validateBooking(req, res, next) {
+  console.log("REQUEST INSIDE BOOKING_MIDDLEWARE", req.body);
   if (!req.body.flightId) {
     ErrorResponse.message = "Failed to process booking";
     ErrorResponse.error = new AppError(
@@ -12,6 +13,8 @@ function validateBooking(req, res, next) {
     );
     return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
   }
+
+  console.log("inside booking middleware req.user ***************", req.user);
 
   if (!req.body.userId) {
     ErrorResponse.message = "Failed to process booking";
