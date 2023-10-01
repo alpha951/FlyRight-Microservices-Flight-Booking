@@ -13,7 +13,7 @@ async function connectQueue() {
     console.log("connected to queue");
     const channel = await connection.createChannel();
     channel.consume("NOTIFICATION_QUEUE", async (data) => {
-      const { recipientEmail, subject, text, html } = JSON.parse(
+      const { recipientEmail, subject, text, html, status } = JSON.parse(
         Buffer.from(data.content)
       );
       await emailService.sendEmail(
@@ -23,6 +23,14 @@ async function connectQueue() {
         text,
         html
       );
+      console.log("Email sent");
+      await emailService.createTicket({
+        recipientEmail,
+        subject,
+        content: html,
+        status,
+      });
+      console.log("Ticket updated");
       channel.ack(data);
     });
   } catch (error) {

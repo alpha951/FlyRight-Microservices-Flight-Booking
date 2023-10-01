@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       content: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       recipientEmail: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.ENUM,
-        values: ["PENDING", "SUCCESS", "FAILED"],
+        values: ["PENDING", "BOOKED", "CANCELLED"],
         defaultValue: "PENDING",
         allowNull: false,
       },

@@ -130,6 +130,7 @@ async function makePayment(data) {
       ),
       text: "it's a plain text since html is not working",
       subject: `Confirmation : Your flight has been booked for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
+      status: "BOOKED",
     });
     await transaction.commit();
 
@@ -196,6 +197,7 @@ async function cancelBooking(data) {
       ),
       text: "it's a plain text since html is not working",
       subject: `Cancellation : Your flight has been cancelled for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
+      status: "CANCELLED",
     });
     await transaction.commit();
   } catch (error) {
