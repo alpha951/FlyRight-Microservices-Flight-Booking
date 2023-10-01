@@ -128,9 +128,13 @@ async function makePayment(data) {
         flightData,
         data.userInfo.email
       ),
-      text: "it's a plain text since html is not working",
+      text: "Your flight is booked. it's a plain text since html is not working",
       subject: `Confirmation : Your flight has been booked for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
       status: "BOOKED",
+      arrival: flightData.arrivalTime,
+      departure: flightData.departureTime,
+      bookingId: bookingDetails.id,
+      seats: bookingDetails.noOfSeats,
     });
     await transaction.commit();
 
@@ -198,6 +202,10 @@ async function cancelBooking(data) {
       text: "it's a plain text since html is not working",
       subject: `Cancellation : Your flight has been cancelled for Booking-Id : ${data.bookingId} - FlyRight Airlines`,
       status: "CANCELLED",
+      arrival: flightData.arrivalTime,
+      departure: flightData.departureTime,
+      bookingId: bookingDetails.id,
+      seats: bookingDetails.noOfSeats,
     });
     await transaction.commit();
   } catch (error) {

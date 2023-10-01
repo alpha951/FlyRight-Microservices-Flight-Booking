@@ -9,18 +9,27 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      subject: {
-        type: Sequelize.STRING,
-      },
-      content: {
-        type: Sequelize.STRING,
+      bookingId: {
+        type: Sequelize.INTEGER,
       },
       recipientEmail: {
         type: Sequelize.STRING,
       },
+      departureTime: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      arrivalTime: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      noOfSeats: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       status: {
         type: Sequelize.ENUM,
-        values: ["PENDING", "SUCCESS", "FAILED"],
+        values: ["PENDING", "BOOKED", "CANCELLED"],
         defaultValue: "PENDING",
         allowNull: false,
       },

@@ -13,9 +13,17 @@ async function connectQueue() {
     console.log("connected to queue");
     const channel = await connection.createChannel();
     channel.consume("NOTIFICATION_QUEUE", async (data) => {
-      const { recipientEmail, subject, text, html, status } = JSON.parse(
-        Buffer.from(data.content)
-      );
+      const {
+        recipientEmail,
+        subject,
+        text,
+        html,
+        status,
+        arrival,
+        departure,
+        bookingId,
+        seats,
+      } = JSON.parse(Buffer.from(data.content));
       await emailService.sendEmail(
         process.env.GMAIL_ID,
         recipientEmail,
@@ -25,9 +33,11 @@ async function connectQueue() {
       );
       console.log("Email sent");
       await emailService.createTicket({
+        bookingId,
         recipientEmail,
-        subject,
-        content: html,
+        departureTime: departure,
+        arrivalTime: arrival,
+        noOfSeats: seats,
         status,
       });
       console.log("Ticket updated");
