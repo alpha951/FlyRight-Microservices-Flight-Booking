@@ -40,4 +40,18 @@ async function getpendingEmails() {
   }
 }
 
-module.exports = { sendEmail, createTicket, getpendingEmails };
+async function getTodaysTickets(today) {
+  try {
+    const response = await ticketRepo.getTodaysTickets(today);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = {
+  sendEmail,
+  createTicket,
+  getpendingEmails,
+  getTodaysTickets,
+};

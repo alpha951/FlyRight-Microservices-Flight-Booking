@@ -6,7 +6,7 @@ const apiRoutes = require("./routes");
 const amqplib = require("amqplib");
 
 const { emailService } = require("./services");
-
+const { CRONS } = require("./utils/common");
 async function connectQueue() {
   try {
     const connection = await amqplib.connect("amqp://127.0.0.1");
@@ -56,5 +56,6 @@ app.use("/api", apiRoutes);
 
 app.listen(ServerConfig.PORT, async () => {
   await connectQueue();
+  await CRONS(emailService);
   console.log(`Successfully started the server on PORT : ${ServerConfig.PORT}`);
 });
