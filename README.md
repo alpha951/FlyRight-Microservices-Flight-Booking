@@ -20,7 +20,7 @@ Non functional Requirements
 
 ## Design
 
-![alt text](Flights-design.png)
+![HLD-Design of Flight Booking System](hld-complete.png)
 
 
 ## Tech Stack
