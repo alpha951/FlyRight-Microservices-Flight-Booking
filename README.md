@@ -1,7 +1,7 @@
 # Flight Booking System
 
 ## Description
-This is a Airline managemnet and flight booking system based on microservices architecture. It has 4 microservices:
+This is an Airline managemnet and flight booking system based on microservices architecture. It has 4 microservices:
 1. Flight Service
 2. Booking Service
 3. Authentication Service
@@ -22,6 +22,20 @@ Non functional Requirements
 
 ![HLD-Design of Flight Booking System](hld-complete.png)
 
+## ER Diagram
+
+### For Flights DB
+![ER Diagram](er.png)
+
+### For Notification DB
+![ER Diagram](notificationdb.png)
+
+
+## Functionalities
+1. Flight Service : CRUD operations on all flight db models
+2. Booking Service : Book or cancel a booking
+3. Notification Service : Send email notifications to users on booking, cancellation. Run CRON jobs to check for        upcoming flights and send notifications.
+4. Authentication Service : Signin, Signup, Reverse proxy for Flight Search and Booking Service
 
 ## Tech Stack
 1.  NodeJS

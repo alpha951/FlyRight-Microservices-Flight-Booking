@@ -6,7 +6,7 @@
 1. Store ticket details in database : DONE
 
 2. Add cron job to check if ticket is expired or not
-3. send reminder email to user before 12 hour of boarding time
+3. send reminder email to user before 12 hour of boarding time  
 4. send a email 1 hour after the arrival time to ask for feedback
 
 5. Add cancel ticket functionality  : DONE
