@@ -18,6 +18,7 @@ const { Sequelize, QueryTypes } = require("sequelize");
 
 async function createBooking(data) {
   const transaction = await db.sequelize.transaction();
+  transaction.ISOLATION_LEVELS.SERIALIZABLE; // To handle two concurrent booking for only one seat that is left
   try {
     console.log("Requesting flight service...");
     // ! Fetching data from FLIGHT MICROSERVICE using Axios
